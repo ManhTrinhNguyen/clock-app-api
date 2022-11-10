@@ -12,6 +12,7 @@ const app = express()
 
 app.use(express.json())
 app.use(express.static("public"))
+const port = process.env.PORT
 
 app.post("/api", (req, res) => {
 
@@ -33,6 +34,6 @@ app.post("/api", (req, res) => {
   })
 
 
-app.listen(3000 , () => {
-    console.log("Server listen on Port 3000");
+app.listen(port , () => {
+    console.log("Server listen on Port " + port);
 })
