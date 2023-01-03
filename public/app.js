@@ -19,20 +19,23 @@
     let dayOfWeek = document.querySelector(".day-of-week")
     let weekNumber = document.querySelector(".week-number")
 
+    const worldTimeApiUrl = "https://worldtimeapi.org/api/ip"
+    const randomQuote = "https://type.fit/api/quotes"
     
-    function fetchApi () {
-        fetch("/api", {
-            method: "POST",
-            headers: {
-                 "Content-Type": "application/json",
-                 "Accept" : "application/json"
-            },
-        }).then(res => res.json()).then(data => {
-             console.log(data)
-            let quoteData = data[1]
-      })
-    }
 
+ // UPDATE QUOTE
+
+    function updateQuote() {    
+        fetch(randomQuote).then(res => res.json()).then(data => {
+        let index = Math.floor(Math.random() * 1643)
+          quote.textContent = data[index].text
+          author.textContent = data[index.author]
+        })    
+          
+    } 
+
+    resetQuote.addEventListener("click", updateQuote)
+// End of Update Quote
 
     //Click Btn 
 
@@ -51,6 +54,8 @@
             arrow.classList.remove("arrow-active")
         }
     })
+    //End of Click Btn
+
 
 // UPDATE TIME 
     function updateTime () {
@@ -90,46 +95,25 @@
 
     }
 
-    setInterval(updateTime, 1000)
-
-    // UPDATE QUOTE
-
-    function updateQuote () {
-        fetch("/api", {
-            method: "POST",
-            headers: {
-                 "Content-Type": "application/json",
-                 "Accept" : "application/json"
-            },
-        }).then(res => res.json()).then(data => {
-             console.log(data)
-            let quoteData = data[2]
-            quote.textContent = quoteData.en
-            author.textContent = quoteData.author
-      })
-    }   
-
-    resetQuote.addEventListener("click", updateQuote)
+    setInterval(updateTime, 100)
+    // End of Update Time
 
     // Update Day Container and Location 
 
     function updateLocation () {
-        fetch("/api", {
-            method: "POST",
-            headers: {
-                 "Content-Type": "application/json",
-                 "Accept" : "application/json"
-            },
-        }).then(res => res.json()).then(data => {
-             let dateData = data[0]
-            dayOfWeek.textContent = dateData.day_of_week
-            dayOfYear.textContent = dateData.day_of_year
-            weekNumber.textContent = dateData.week_number
-            dayContainerLocation.textContent = dateData.timezone
-            locationUnderTime.textContent = dateData.timezone
-      })
+        fetch(worldTimeApiUrl).then(res => res.json()).then(data => {
+            console.log(data)
+            dayOfWeek.textContent = data.day_of_week
+            dayOfYear.textContent = data.day_of_year
+            weekNumber.textContent = data.week_number
+            dayContainerLocation.textContent = data.timezone
+            locationUnderTime.textContent = data.timezone
+        })
+             
     }
+
     updateLocation()
+     
 
 
 
